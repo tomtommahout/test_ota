@@ -8,5 +8,8 @@ ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "main.py")
 ota_updater.download_and_install_update_if_available()
 
 led = machine.Pin("LED", machine.Pin.OUT)
-led.off()
-led.on()
+while True:
+  led.value(True)  #turn on the LED
+  time.sleep(1)   #wait for one second
+  led.value(False)  #turn off the LED
+  time.sleep(1)   #wait for one second
