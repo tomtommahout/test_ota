@@ -1,6 +1,7 @@
 from ota import OTAUpdater
 from WIFI_CONFIG import SSID, PASSWORD
 from machine import Pin
+import time
 
 firmware_url = "https://github.com/tomtommahout/test_ota/"
 
