@@ -7,6 +7,6 @@ firmware_url = "https://github.com/tomtommahout/test_ota/"
 ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "main.py")
 ota_updater.download_and_install_update_if_available()
 
-led = Pin(25, Pin.OUT)
+led = machine.Pin("LED", machine.Pin.OUT)
 led.off()
 led.on()
