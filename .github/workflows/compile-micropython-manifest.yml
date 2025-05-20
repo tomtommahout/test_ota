@@ -1,0 +1,46 @@
+# GitHub Actions workflow for compiling MicroPython manifest
+name: Compile MicroPython Manifest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install mpremote (MicroPython tool)
+        run: pip install mpremote
+
+      - name: List project files
+        run: ls -l
+
+      - name: Compile manifest.py (dry run)
+        run: |
+          echo "Manifest file contents:" && cat manifest.py
+          # Add actual MicroPython compilation or freeze step here if needed
+
+      - name: Install mpy-cross (MicroPython cross-compiler)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git build-essential
+          git clone https://github.com/micropython/micropython.git
+          cd micropython/mpy-cross && make
+
+      - name: Compile Python files to .mpy for Pico W
+        run: |
+          export PATH=$PATH:$(pwd)/micropython/mpy-cross
+          ./micropython/mpy-cross/mpy-cross main.py
+          # Add more files as needed, e.g.:
+          # ./micropython/mpy-cross/mpy-cross ota.py
+          ls -l *.mpy || true
